@@ -82,8 +82,12 @@ namespace bario3
             {
                 int weightScan = Int32.Parse(textBoxWeightScan.Text);
                 int serialScan = Int32.Parse(textBoxSerialScan.Text);
-                mainDBController.ScanPosition(weightScan, serialScan);
-                mainDBController.ShowInventDB(dataGridViewInvent, mainDBController.inventDB);
+
+                SQL.ScanPosition(weightScan, serialScan);
+                SQL.ShowDB(dataGridViewInvent, SQL.inventShowDBString);
+                
+                //mainDBController.ScanPosition(weightScan, serialScan);
+                //mainDBController.ShowInventDB(dataGridViewInvent, mainDBController.inventDB);
             }catch(Exception ex)
             {
                 MessageBox.Show("Ошибка в сканируемых значениях\n" + ex.Message);

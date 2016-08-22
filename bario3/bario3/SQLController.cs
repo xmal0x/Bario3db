@@ -133,6 +133,13 @@ namespace bario3
 
         public void ScanPosition(int weightScan, int serialScan)
         {
+
+            if (!CheckSerial(serialScan))
+            {
+                MessageBox.Show("Ошибка, позиция с таким серийным номером не найдена в номенклатурном справочнике");
+                return;
+            }
+
             DateTime date;
             string name = "";
             int serial;
