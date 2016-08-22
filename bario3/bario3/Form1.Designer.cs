@@ -58,6 +58,7 @@
             this.labelScanposition = new System.Windows.Forms.Label();
             this.dataGridViewInvent = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             this.panelAddPosition = new System.Windows.Forms.Panel();
             this.buttonAddPosition = new System.Windows.Forms.Button();
             this.textBoxAddPortion = new System.Windows.Forms.TextBox();
@@ -82,7 +83,6 @@
             this.labelAddName = new System.Windows.Forms.Label();
             this.labelAddPosition = new System.Windows.Forms.Label();
             this.dataGridViewClassification = new System.Windows.Forms.DataGridView();
-            this.buttonRefresh = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -151,7 +151,7 @@
             this.labelMoneyDiffd1d2.Name = "labelMoneyDiffd1d2";
             this.labelMoneyDiffd1d2.Size = new System.Drawing.Size(207, 13);
             this.labelMoneyDiffd1d2.TabIndex = 6;
-            this.labelMoneyDiffd1d2.Text = "Разница между 1 днем и 2м(выручка?):";
+            this.labelMoneyDiffd1d2.Text = "Разница между 2 днем и 1м(выручка?):";
             // 
             // buttonMoneyDifference
             // 
@@ -385,6 +385,16 @@
             this.tabPage3.Text = "БД наименований";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Location = new System.Drawing.Point(821, 350);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
+            this.buttonRefresh.TabIndex = 2;
+            this.buttonRefresh.Text = "Обновить";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
             // panelAddPosition
             // 
             this.panelAddPosition.Controls.Add(this.buttonAddPosition);
@@ -600,16 +610,6 @@
             this.dataGridViewClassification.Name = "dataGridViewClassification";
             this.dataGridViewClassification.Size = new System.Drawing.Size(810, 634);
             this.dataGridViewClassification.TabIndex = 0;
-            // 
-            // buttonRefresh
-            // 
-            this.buttonRefresh.Location = new System.Drawing.Point(821, 350);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
-            this.buttonRefresh.TabIndex = 2;
-            this.buttonRefresh.Text = "Обновить";
-            this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // FormMain
             // 

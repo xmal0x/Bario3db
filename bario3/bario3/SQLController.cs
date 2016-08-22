@@ -11,30 +11,30 @@ namespace bario3
 {
     class SQLController
     {
+        //строка подключения к БД
         private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mainDB.mdf;Integrated Security=True";
+        
+        //команда для запроса к БД наименований 
         public string classificationShowDBString = @"SELECT [Id] AS [Номер], [Name] AS [Название], [Serial] AS [Серийный номер], 
                                                     [Type] AS [Тип], [Weight Full] AS [Вес полной бутылки, гр.], [Weight Empty] AS [Вес пустой бутылки, гр.], 
                                                     [Weight Now] AS [Текущий вес бутылки, гр.], [Capacity Full] AS [Полный обьем, мл.], [Capacity Now] AS [Текущий обьем, мл.], 
                                                     [Price] AS [Цена за порцию, руб.], [Portion] AS [Порция, мл] FROM [dbo].[Classification]";
+        
+        //запрос к БД инвентаризации
         public string inventShowDBString = @"SELECT [Id] AS [Номер], [Date] AS [Дата инвентаризации], [Name] AS [Название], [Serial] AS [Серийный номер], 
                                                     [Type] AS [Тип], [Capacity Full] AS [Полный обьем, мл.], [Capacity Now] AS [Текущий обьем, мл.], 
                                                     [Price] AS [Цена за порцию, руб.], [Portion] AS [Порция, мл], [Full Price] AS [Стоимость полная, руб] 
                                                     FROM [dbo].[Invent]";
-
-
-        //dg.Columns.Add("posNum", "Номер");
-        //        dg.Columns.Add("name", "Название");
-        //        dg.Columns.Add("serial", "Серийник");
-        //        dg.Columns.Add("type", "Тип");
-        //        dg.Columns.Add("weightFull", "Вес полной бутылки, гр");
-        //        dg.Columns.Add("weightEmpty", "Вес пустой бутылки, гр");
-        //        dg.Columns.Add("weightNow", "Текущий вес бутылки, гр");
-        //        dg.Columns.Add("capacityFull", "Полный обьем, мл");
-        //        dg.Columns.Add("capacityNow", "Текущий обьем, мл");
-        //        dg.Columns.Add("price", "Цена за порцию, руб");
-        //        dg.Columns.Add("portion", "Порция, мл");
-
+        
+        //создаем подключение
         private SqlConnection connection = new SqlConnection(connectionString);
+
+        public void Connect(DataGridView _dataGridClass, DataGridView _dataGridInvent)
+        {
+            //коннект, загружаем данные из таблиц в датаГриды 
+            ShowDB(_dataGridClass, classificationShowDBString);
+            ShowDB(_dataGridInvent, inventShowDBString);
+        }
 
         public void ShowDB(DataGridView _dataGrid, string typeDBcommand)
         {
@@ -153,6 +153,8 @@ namespace bario3
             SqlCommand commandInsertToInventDB = new SqlCommand(@"INSERT INTO [dbo].[Invent] ([Date], [Name], [Serial], [Type], [Capacity Full],
                                                                 [Capacity Now], [Price], [Portion], [Full Price]) VALUES (@date, @name, @serial, @type, 
                                                                 @capacityFull, @capacityNow, @price, @portion, @fullPrice)", connection);
+            //берем обьект типа Боттле из БД наименований по серийнику
+            Bottle inventBottle = MakeBottleFromClassDB(serialScan);
 
             try
             {
@@ -169,10 +171,13 @@ namespace bario3
                         serial = (int)dataReader["Serial"];
                         type = dataReader["Type"].ToString();
                         capacityFull = (int)dataReader["Capacity Full"];
-                        capacityNow = (int)dataReader["Capacity Now"];
+                        capacityNow = (int)mathBario.Calculate(inventBottle, weightScan);
                         price = (int)dataReader["Price"];
                         portion = (int)dataReader["Portion"];
-                        fullPrice = (int)dataReader["Price"] + 10;
+
+                        //для расчета полной стоимости берем значение текущей емкости
+                        inventBottle.capacityNow = capacityNow;
+                        fullPrice = (int)mathBario.FullPriceCalculate(inventBottle);
 
 
                         commandInsertToInventDB.Parameters.AddWithValue("@date", date);
@@ -206,6 +211,124 @@ namespace bario3
                 connection.Close();
             }
 
+        }
+
+        public string[] GetDataFromClass(string dataName)
+        {
+            //получаем список значений определенных столбцов, нужно для автозаполнения текстБоксов Нэйм и Тип
+            List<string> dataList = new List<string>();
+
+            try
+            {
+                connection.Open();
+                SqlCommand commandGetData = new SqlCommand("SELECT [Name], [Type] FROM [dbo].[Classification]", connection);
+                
+                using (SqlDataReader dataReader = commandGetData.ExecuteReader())
+                {
+                    while(dataReader.Read())
+                    {
+                        dataList.Add(dataReader[dataName].ToString());
+                        Console.WriteLine(dataReader[dataName].ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при чтении данных из БД\n" + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dataList.ToArray();
+        }
+
+
+        public Bottle MakeBottleFromClassDB(int serial)
+        {
+            Bottle bottle = new Bottle();
+            bottle.name = "";
+            try
+            {
+                connection.Open();
+
+                SqlCommand commandGetBottle = new SqlCommand(@"SELECT * FROM [dbo].[Classification] WHERE [Serial] = @serial",connection);
+                commandGetBottle.Parameters.AddWithValue("@serial", serial);
+
+                using (SqlDataReader dataReader = commandGetBottle.ExecuteReader())
+                {
+                    while(dataReader.Read())
+                    {
+                        bottle.posNum = (int)dataReader["Id"];
+                        bottle.name = dataReader["Name"].ToString();
+                        bottle.serial = (int)dataReader["Serial"];
+                        bottle.type = dataReader["Type"].ToString();
+                        bottle.weightFull = (int)dataReader["Weight full"];
+                        bottle.weightEmpty = (int)dataReader["Weight Empty"];
+                        bottle.weightNow = (int)dataReader["Weight Now"];
+                        bottle.capacityFull = (int)dataReader["Capacity Full"];
+                        bottle.capacityNow = (int)dataReader["Capacity Now"];
+                        bottle.price = (int)dataReader["Price"];
+                        bottle.portion = (int)dataReader["Portion"];
+                        
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при преобразовании в БД\n" + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return bottle;
+        }
+
+        public Dictionary<DateTime, Bottle> GetDictionaryFromDate(DateTime date)
+        {
+            Dictionary<DateTime, Bottle> dict = new Dictionary<DateTime, Bottle>();
+            Bottle inventBottle = new Bottle();
+
+            try
+            {
+                connection.Open();
+
+                SqlCommand commandGetFromDate = new SqlCommand(@"SELECT * FROM [dbo].[Invent]", connection);
+
+                using (SqlDataReader dataReader = commandGetFromDate.ExecuteReader())
+                {
+                    while(dataReader.Read())
+                    {
+                        DateTime dateFromSQl = (DateTime)dataReader["Date"];
+                        if (date.Date == dateFromSQl.Date)
+                        {
+                            inventBottle.posNum = (int)dataReader["Id"];
+                            inventBottle.name = dataReader["Name"].ToString();
+                            inventBottle.serial = (int)dataReader["Serial"];
+                            inventBottle.type = dataReader["Type"].ToString();
+                            inventBottle.capacityFull = (int)dataReader["Capacity Full"];
+                            inventBottle.capacityNow = (int)dataReader["Capacity Now"];
+                            inventBottle.price = (int)dataReader["Price"];
+                            inventBottle.portion = (int)dataReader["Portion"];
+
+                            dict.Add(dateFromSQl, inventBottle);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при выборке по дате из БД\n" + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return dict;
         }
     }
 }

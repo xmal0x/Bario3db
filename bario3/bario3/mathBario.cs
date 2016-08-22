@@ -20,7 +20,7 @@ namespace bario3
             
         }
 
-        internal static int CalculateMoneyForDay(DateTime date, Dictionary<DateTime, Bottle> dict)
+        internal static int CalculateMoneyForDay( Dictionary<DateTime, Bottle> dict)
         {
             //расчет стоимости всех позиций за определенную дату date
             int fullMoneyDate = 0;
@@ -29,10 +29,10 @@ namespace bario3
             {
                 foreach(DateTime k in dict.Keys)
                 {
-                    if (k.Date == date.Date)
-                    {
+
+
                         fullMoneyDate += (int)FullPriceCalculate(dict[k]);
-                    }
+
                 }
                 
             }

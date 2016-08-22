@@ -12,27 +12,28 @@ namespace bario3
 {
     public partial class FormMain : Form
     {
-        DBController mainDBController;
+        //DBController mainDBController;
         SQLController SQL;
         public FormMain()
         {
             InitializeComponent();
-            mainDBController = new DBController();
+            //mainDBController = new DBController();
             SQL = new SQLController();
 
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
+            SQL.Connect(dataGridViewClassification, dataGridViewInvent);
 
-            mainDBController.Connect();
-            mainDBController.LoadAll();
-            mainDBController.ShowClassDB(dataGridViewClassification, mainDBController.classificationDB);
-            mainDBController.ShowInventDB(dataGridViewInvent, mainDBController.inventDB);
+            //mainDBController.Connect();
+            //mainDBController.LoadAll();
+            //mainDBController.ShowClassDB(dataGridViewClassification, mainDBController.classificationDB);
+            //mainDBController.ShowInventDB(dataGridViewInvent, mainDBController.inventDB);
 
             //инициализация автокомплитов для name and type
-            HelpController.IniAuto(mainDBController.classificationDB, textBoxAddName, "name");
-            HelpController.IniAuto(mainDBController.classificationDB, textBoxAddType, "type");
+            HelpController.IniAuto(SQL.GetDataFromClass("Name"), textBoxAddName);
+            HelpController.IniAuto(SQL.GetDataFromClass("Type"), textBoxAddType);
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -73,7 +74,7 @@ namespace bario3
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            mainDBController.SaveAll();
+            //mainDBController.SaveAll();
         }
 
         private void buttonScanPosition_Click(object sender, EventArgs e)
@@ -99,7 +100,7 @@ namespace bario3
         {
             DateTime date = dateTimePickerMoney.Value;
 
-            labelMoneyFull.Text = mathBario.CalculateMoneyForDay(date, mainDBController.inventDB).ToString();
+            labelMoneyFull.Text = mathBario.CalculateMoneyForDay(SQL.GetDictionaryFromDate(date)).ToString();
         }
 
         private void buttonMoneyDifference_Click(object sender, EventArgs e)
@@ -110,7 +111,7 @@ namespace bario3
             DateTime day2 = dateTimePickerMoneyDiffDay2.Value;
 
             //считаем как Стоимость позиций в 2й день - стоимость позиций в день 1 получаем теоретическую выручку
-            gain = mathBario.CalculateMoneyForDay(day2, mainDBController.inventDB) - mathBario.CalculateMoneyForDay(day1, mainDBController.inventDB);
+            gain = mathBario.CalculateMoneyForDay(SQL.GetDictionaryFromDate(day2)) - mathBario.CalculateMoneyForDay(SQL.GetDictionaryFromDate(day1));
 
             labelMoneyDiff.Text = gain.ToString(); 
 

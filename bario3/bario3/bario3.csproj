@@ -74,6 +74,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="HelpController.cs" />
+    <Compile Include="mainDBDataSet.cs">
+      <DependentUpon>mainDBDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="mainDBDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

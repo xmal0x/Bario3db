@@ -12,40 +12,25 @@ namespace bario3
         //Список для автозамен
         static List<string> lstAuto = new List<string>();
 
-        private static string[] AddToAutoList(Dictionary<int, Bottle> dict, List<string> lst, string textBoxName)
-        {
-            //создаем список для автозамен, значения берем из словаря, выбираем по полю textBoxName
-            if (textBoxName == "name")
+        private static string[] AddToAutoList(string[] dataArray, List<string> lst)
+        { 
+            //создаем список для автозамен, получаем массив значений и выбираем только уникальные
+            foreach (string k in dataArray)
             {
-                //добавляем название
-                foreach (int k in dict.Keys)
-                {
-                    if (lst.Contains(dict[k].name))
-                        break;
-                    lst.Add(dict[k].name);
-                }
-
-            }
-            if (textBoxName == "type")
-            {
-                //добавляем тип позиции
-                foreach (int k in dict.Keys)
-                {
-                    if (lst.Contains(dict[k].type))
-                        break;
-                    lst.Add(dict[k].type);
-                }
-
+                    
+                if (lst.Contains(k.Trim()))
+                    break;
+                lst.Add(k.Trim());
             }
 
             return lst.ToArray();
         }
 
-        public static void IniAuto(Dictionary<int, Bottle> dict, TextBox tbox, string textBoxName)
+        public static void IniAuto(string[] dataArray, TextBox tbox)
         {
-            //инициализация автоКомплита, значения считываются из словаря, по полю textBoxName
+            //инициализация автоКомплита, значения считываются из массива, полученого из БД
             AutoCompleteStringCollection source = new AutoCompleteStringCollection();
-            source.AddRange(AddToAutoList(dict, lstAuto, textBoxName));
+            source.AddRange(AddToAutoList(dataArray, lstAuto));
             tbox.AutoCompleteCustomSource = source;
             tbox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             tbox.AutoCompleteSource = AutoCompleteSource.CustomSource;
