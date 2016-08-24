@@ -58,7 +58,7 @@
             this.labelScanposition = new System.Windows.Forms.Label();
             this.dataGridViewInvent = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.buttonRefresh = new System.Windows.Forms.Button();
+            this.buttonDeleteClass = new System.Windows.Forms.Button();
             this.panelAddPosition = new System.Windows.Forms.Panel();
             this.buttonAddPosition = new System.Windows.Forms.Button();
             this.textBoxAddPortion = new System.Windows.Forms.TextBox();
@@ -83,6 +83,15 @@
             this.labelAddName = new System.Windows.Forms.Label();
             this.labelAddPosition = new System.Windows.Forms.Label();
             this.dataGridViewClassification = new System.Windows.Forms.DataGridView();
+            this.textBoxSerialDelClass = new System.Windows.Forms.TextBox();
+            this.textBoxIdDelClass = new System.Windows.Forms.TextBox();
+            this.labelSerialDelClass = new System.Windows.Forms.Label();
+            this.labelIdDelClass = new System.Windows.Forms.Label();
+            this.labelIdDelInvent = new System.Windows.Forms.Label();
+            this.labelSerialDelInvent = new System.Windows.Forms.Label();
+            this.textBoxIdDelInvent = new System.Windows.Forms.TextBox();
+            this.textBoxSerialDelInvent = new System.Windows.Forms.TextBox();
+            this.buttonDelInvent = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -291,6 +300,11 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.labelIdDelInvent);
+            this.tabPage2.Controls.Add(this.labelSerialDelInvent);
+            this.tabPage2.Controls.Add(this.textBoxIdDelInvent);
+            this.tabPage2.Controls.Add(this.textBoxSerialDelInvent);
+            this.tabPage2.Controls.Add(this.buttonDelInvent);
             this.tabPage2.Controls.Add(this.panelScanPosition);
             this.tabPage2.Controls.Add(this.dataGridViewInvent);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -375,7 +389,11 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.buttonRefresh);
+            this.tabPage3.Controls.Add(this.labelIdDelClass);
+            this.tabPage3.Controls.Add(this.labelSerialDelClass);
+            this.tabPage3.Controls.Add(this.textBoxIdDelClass);
+            this.tabPage3.Controls.Add(this.textBoxSerialDelClass);
+            this.tabPage3.Controls.Add(this.buttonDeleteClass);
             this.tabPage3.Controls.Add(this.panelAddPosition);
             this.tabPage3.Controls.Add(this.dataGridViewClassification);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
@@ -385,15 +403,15 @@
             this.tabPage3.Text = "БД наименований";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // buttonRefresh
+            // buttonDeleteClass
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(821, 350);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
-            this.buttonRefresh.TabIndex = 2;
-            this.buttonRefresh.Text = "Обновить";
-            this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            this.buttonDeleteClass.Location = new System.Drawing.Point(995, 401);
+            this.buttonDeleteClass.Name = "buttonDeleteClass";
+            this.buttonDeleteClass.Size = new System.Drawing.Size(75, 23);
+            this.buttonDeleteClass.TabIndex = 2;
+            this.buttonDeleteClass.Text = "Удалить";
+            this.buttonDeleteClass.UseVisualStyleBackColor = true;
+            this.buttonDeleteClass.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // panelAddPosition
             // 
@@ -611,6 +629,80 @@
             this.dataGridViewClassification.Size = new System.Drawing.Size(810, 634);
             this.dataGridViewClassification.TabIndex = 0;
             // 
+            // textBoxSerialDelClass
+            // 
+            this.textBoxSerialDelClass.Location = new System.Drawing.Point(970, 349);
+            this.textBoxSerialDelClass.Name = "textBoxSerialDelClass";
+            this.textBoxSerialDelClass.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSerialDelClass.TabIndex = 22;
+            // 
+            // textBoxIdDelClass
+            // 
+            this.textBoxIdDelClass.Location = new System.Drawing.Point(970, 375);
+            this.textBoxIdDelClass.Name = "textBoxIdDelClass";
+            this.textBoxIdDelClass.Size = new System.Drawing.Size(100, 20);
+            this.textBoxIdDelClass.TabIndex = 22;
+            // 
+            // labelSerialDelClass
+            // 
+            this.labelSerialDelClass.AutoSize = true;
+            this.labelSerialDelClass.Location = new System.Drawing.Point(905, 352);
+            this.labelSerialDelClass.Name = "labelSerialDelClass";
+            this.labelSerialDelClass.Size = new System.Drawing.Size(59, 13);
+            this.labelSerialDelClass.TabIndex = 22;
+            this.labelSerialDelClass.Text = "Серийник:";
+            // 
+            // labelIdDelClass
+            // 
+            this.labelIdDelClass.AutoSize = true;
+            this.labelIdDelClass.Location = new System.Drawing.Point(943, 378);
+            this.labelIdDelClass.Name = "labelIdDelClass";
+            this.labelIdDelClass.Size = new System.Drawing.Size(21, 13);
+            this.labelIdDelClass.TabIndex = 23;
+            this.labelIdDelClass.Text = "ID:";
+            // 
+            // labelIdDelInvent
+            // 
+            this.labelIdDelInvent.AutoSize = true;
+            this.labelIdDelInvent.Location = new System.Drawing.Point(913, 159);
+            this.labelIdDelInvent.Name = "labelIdDelInvent";
+            this.labelIdDelInvent.Size = new System.Drawing.Size(21, 13);
+            this.labelIdDelInvent.TabIndex = 28;
+            this.labelIdDelInvent.Text = "ID:";
+            // 
+            // labelSerialDelInvent
+            // 
+            this.labelSerialDelInvent.AutoSize = true;
+            this.labelSerialDelInvent.Location = new System.Drawing.Point(875, 133);
+            this.labelSerialDelInvent.Name = "labelSerialDelInvent";
+            this.labelSerialDelInvent.Size = new System.Drawing.Size(59, 13);
+            this.labelSerialDelInvent.TabIndex = 25;
+            this.labelSerialDelInvent.Text = "Серийник:";
+            // 
+            // textBoxIdDelInvent
+            // 
+            this.textBoxIdDelInvent.Location = new System.Drawing.Point(940, 156);
+            this.textBoxIdDelInvent.Name = "textBoxIdDelInvent";
+            this.textBoxIdDelInvent.Size = new System.Drawing.Size(100, 20);
+            this.textBoxIdDelInvent.TabIndex = 26;
+            // 
+            // textBoxSerialDelInvent
+            // 
+            this.textBoxSerialDelInvent.Location = new System.Drawing.Point(940, 130);
+            this.textBoxSerialDelInvent.Name = "textBoxSerialDelInvent";
+            this.textBoxSerialDelInvent.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSerialDelInvent.TabIndex = 27;
+            // 
+            // buttonDelInvent
+            // 
+            this.buttonDelInvent.Location = new System.Drawing.Point(965, 182);
+            this.buttonDelInvent.Name = "buttonDelInvent";
+            this.buttonDelInvent.Size = new System.Drawing.Size(75, 23);
+            this.buttonDelInvent.TabIndex = 24;
+            this.buttonDelInvent.Text = "Удалить";
+            this.buttonDelInvent.UseVisualStyleBackColor = true;
+            this.buttonDelInvent.Click += new System.EventHandler(this.buttonDelInvent_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -631,10 +723,12 @@
             this.panelMoney.PerformLayout();
             this.panelMain.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.panelScanPosition.ResumeLayout(false);
             this.panelScanPosition.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewInvent)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.panelAddPosition.ResumeLayout(false);
             this.panelAddPosition.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClassification)).EndInit();
@@ -698,7 +792,16 @@
         private System.Windows.Forms.Label labelMoneyDiffDay2;
         private System.Windows.Forms.Label labelMoneyDiffDay1;
         private System.Windows.Forms.Label labelMoneyDifference;
-        private System.Windows.Forms.Button buttonRefresh;
+        private System.Windows.Forms.Button buttonDeleteClass;
+        private System.Windows.Forms.Label labelIdDelClass;
+        private System.Windows.Forms.Label labelSerialDelClass;
+        private System.Windows.Forms.TextBox textBoxIdDelClass;
+        private System.Windows.Forms.TextBox textBoxSerialDelClass;
+        private System.Windows.Forms.Label labelIdDelInvent;
+        private System.Windows.Forms.Label labelSerialDelInvent;
+        private System.Windows.Forms.TextBox textBoxIdDelInvent;
+        private System.Windows.Forms.TextBox textBoxSerialDelInvent;
+        private System.Windows.Forms.Button buttonDelInvent;
     }
 }
 

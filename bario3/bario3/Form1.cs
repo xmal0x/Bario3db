@@ -119,15 +119,39 @@ namespace bario3
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string tableFrom = "[dbo].[Classification]";
+                int id = Int32.Parse(textBoxIdDelClass.Text);
+                int serial = Int32.Parse(textBoxSerialDelClass.Text);
 
+                SQL.DeleteRecord(tableFrom, serial, id);
 
-            SQLController sql = new SQLController();
-            //sql.ShowDB(dataGridViewClassification,sql.classificationShowDBString);
+                SQL.ShowDB(dataGridViewClassification, SQL.classificationShowDBString);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ошибка, проверьте правильность значений\n" + ex.Message);
+            }
 
-            sql.InsertToClassDb("test", 1, "test", 1, 1, 1, 1, 1, 1, 1);
-            sql.ShowDB(dataGridViewClassification, sql.classificationShowDBString);
-            sql.ScanPosition(12, 1);
-            sql.ShowDB(dataGridViewInvent, sql.inventShowDBString);
+        }
+
+        private void buttonDelInvent_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string tableFrom = "[dbo].[Invent]";
+                int id = Int32.Parse(textBoxIdDelInvent.Text);
+                int serial = Int32.Parse(textBoxSerialDelInvent.Text);
+
+                SQL.DeleteRecord(tableFrom, serial, id);
+
+                SQL.ShowDB(dataGridViewInvent, SQL.inventShowDBString);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка, проверьте правильность значений\n" + ex.Message);
+            }
         }
     }
 }

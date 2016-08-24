@@ -330,5 +330,26 @@ namespace bario3
 
             return dict;
         }
+
+        public void DeleteRecord(string tableFromDB, int serial, int id)
+        {
+            try
+            {
+                connection.Open();
+
+                SqlCommand commandDelete = new SqlCommand("DELETE FROM " + tableFromDB + " WHERE [Id] = @id AND [Serial] = @serial", connection);
+                commandDelete.Parameters.AddWithValue("@id", id);
+                commandDelete.Parameters.AddWithValue("@serial", serial);
+                commandDelete.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка, удаление данных не произошло\n" + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }
